@@ -44,7 +44,6 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("numbersCount", numbersCount)
-        activity.
         super.onSaveInstanceState(outState)
     }
 
