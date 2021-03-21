@@ -15,15 +15,17 @@ class NumberFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_number, container, false) as TextView
-        if (arguments != null) {
-            number = arguments!!.getInt("number")
-        } else if (savedInstanceState != null) {
-            number = savedInstanceState.getInt("number")
-        }
+        number = if (arguments != null) {
+            arguments!!.getInt("number")
+        } else savedInstanceState?.getInt("number") ?: 0
 
-        view.text = number.toString()
-        view.setTextColor(
+        return inflater.inflate(R.layout.fragment_number, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val textView = view.findViewById<TextView>(R.id.number_text)
+        textView.text = number.toString()
+        textView.setTextColor(
             resources.getColor(
                 when {
                     number % 2 == 1 -> R.color.blue
@@ -31,6 +33,10 @@ class NumberFragment : Fragment() {
                 }
             )
         )
-        return view
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("number", number)
+        super.onSaveInstanceState(outState)
     }
 }

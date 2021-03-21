@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NumbersListFragment : Fragment(), View.OnClickListener {
 
-    private var initNumbersCount: Int = 100
+    private var numbersCount: Int = 100
     private lateinit var mRvNumbers: RecyclerView
     private lateinit var mAdapter: NumbersAdapter
 
@@ -26,12 +26,10 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initNumbersCount = savedInstanceState?.getInt("initNumbersCount") ?: 100
+        numbersCount = savedInstanceState?.getInt("numbersCount") ?: 100
 
         mRvNumbers = view.findViewById(R.id.numbers_list)
         mAdapter = NumbersAdapter()
-        mAdapter.setParentFragment(this)
-        mAdapter.setNumbersCount(count = initNumbersCount)
 
         mRvNumbers.adapter = mAdapter
         mRvNumbers.layoutManager = GridLayoutManager(
@@ -45,12 +43,13 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt("initNumbersCount", initNumbersCount)
+        outState.putInt("numbersCount", numbersCount)
+        activity.
         super.onSaveInstanceState(outState)
     }
 
     override fun onClick(view: View?) {
-        if (view!!.id == R.id.add_number_btn) {
+        if (view?.id == R.id.add_number_btn) {
             var count: Int = mAdapter.addNumber()
             mRvNumbers.scrollToPosition(count - 1)
         } else if (view is TextView) {
@@ -66,5 +65,42 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    // Adapter
+    private inner class NumbersAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val layoutInflater = LayoutInflater.from(parent?.context)
+            val numberView = layoutInflater.inflate(R.layout.cell_number, parent, false)
+            return NumbersViewHolder(itemView = numberView)
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            var mTxtNumber: TextView = holder.itemView.findViewById(R.id.number_text)
+
+            mTxtNumber.text = (position + 1).toString()
+            mTxtNumber.setTextColor(
+                holder.itemView.resources.getColor(
+                    when {
+                        position % 2 == 1 -> R.color.blue
+                        else -> R.color.red
+                    }
+                )
+            )
+            holder.itemView.setOnClickListener(this@NumbersListFragment)
+        }
+
+        override fun getItemCount(): Int {
+            return numbersCount
+        }
+
+        fun addNumber(): Int {
+            numbersCount++
+            notifyItemInserted(numbersCount - 1)
+            return numbersCount
+        }
+
+        inner class NumbersViewHolder(itemView: View) :
+            RecyclerView.ViewHolder(itemView) {}
     }
 }
