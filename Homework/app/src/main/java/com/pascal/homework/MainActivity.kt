@@ -8,7 +8,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
+        if (supportFragmentManager.findFragmentById(R.id.main_frame) == null) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.main_frame, NumbersListFragment())
