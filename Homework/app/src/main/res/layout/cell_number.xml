@@ -4,7 +4,7 @@
     android:id="@+id/number_text"
     style="@style/TextAppearance.MaterialComponents.Headline4"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:drawable/editbox_background"
     android:minWidth="48dp"
     android:minHeight="48dp"

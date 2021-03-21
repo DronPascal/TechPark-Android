@@ -26,6 +26,8 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initNumbersCount = savedInstanceState?.getInt("initNumbersCount") ?: 100
+
         mRvNumbers = view.findViewById(R.id.numbers_list)
         mAdapter = NumbersAdapter()
         mAdapter.setParentFragment(this)
@@ -47,16 +49,11 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
         super.onSaveInstanceState(outState)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        initNumbersCount = savedInstanceState?.getInt("initNumbersCount") ?: 100
-        super.onViewStateRestored(savedInstanceState)
-    }
-
     override fun onClick(view: View?) {
         if (view!!.id == R.id.add_number_btn) {
             var count: Int = mAdapter.addNumber()
             mRvNumbers.scrollToPosition(count - 1)
-        } else if (view is TextView && activity != null) {
+        } else if (view is TextView) {
             val bundle = Bundle()
             bundle.putInt("number", view.text.toString().toInt())
 
