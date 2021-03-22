@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">homework_list</string>
+    <string name="number_title">Значение:</string>
+    <string name="add_new_number">Добавить число</string>
+    <string name="numbers_not_found">Список пуст</string>
+    <string name="numbers_loaded">Список получен</string>
+</resources>
