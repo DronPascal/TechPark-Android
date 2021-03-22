@@ -1,5 +1,7 @@
 package com.pascal.homework
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,21 +14,24 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class NumbersListFragment : Fragment(), View.OnClickListener {
-
     private var numbersCount: Int = 100
+    private var APP_PREFERENCES_COUNTER: String = "prefNumberCount"
+    private var APP_INSTANCE_COUNTER: String = "instNumberCount"
     private lateinit var mRvNumbers: RecyclerView
     private lateinit var mAdapter: NumbersAdapter
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        prefs = activity!!.getSharedPreferences("settings", Context.MODE_PRIVATE)
         return inflater.inflate(R.layout.fragment_numbers_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        numbersCount = savedInstanceState?.getInt("numbersCount") ?: 100
+        numbersCount = savedInstanceState?.getInt(APP_INSTANCE_COUNTER) ?: 100
 
         mRvNumbers = view.findViewById(R.id.numbers_list)
         mAdapter = NumbersAdapter()
@@ -42,9 +47,23 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
         view.findViewById<Button>(R.id.add_number_btn).setOnClickListener(this)
     }
 
+    override fun onPause() {
+        super.onPause()
+        val editor = prefs.edit()
+        editor.putInt(APP_PREFERENCES_COUNTER, numbersCount).apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (prefs.contains(APP_PREFERENCES_COUNTER)) {
+            var counter = prefs.getInt(APP_PREFERENCES_COUNTER, 0)
+            numbersCount = counter
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt("numbersCount", numbersCount)
         super.onSaveInstanceState(outState)
+        outState.putInt(APP_INSTANCE_COUNTER, numbersCount)
     }
 
     override fun onClick(view: View?) {
