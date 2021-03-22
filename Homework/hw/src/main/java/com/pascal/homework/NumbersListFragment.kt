@@ -68,14 +68,16 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         if (view?.id == R.id.add_number_btn) {
-            var count: Int = mAdapter.addNumber()
-            mRvNumbers.scrollToPosition(count - 1)
-        } else if (view is TextView) {
+            mAdapter.addNumber()
+            mRvNumbers.smoothScrollToPosition(numbersCount - 1)
+        } else if (view?.findViewById<TextView>(R.id.number_text) !== null) {
+            val txtView = view.findViewById<TextView>(R.id.number_text)
+
             val bundle = Bundle()
-            bundle.putInt("number", view.text.toString().toInt())
+            bundle.putInt("number", txtView.text.toString().toInt())
 
             val numberFragment = NumberFragment()
-            numberFragment.setArguments(bundle)
+            numberFragment.arguments = bundle
 
             activity!!.supportFragmentManager
                 .beginTransaction()
@@ -96,11 +98,12 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var mTxtNumber: TextView = holder.itemView.findViewById(R.id.number_text)
 
-            mTxtNumber.text = (position + 1).toString()
+            var curNumber: Int = position + 1
+            mTxtNumber.text = (curNumber).toString()
             mTxtNumber.setTextColor(
                 holder.itemView.resources.getColor(
                     when {
-                        position % 2 == 1 -> R.color.blue
+                        curNumber % 2 == 1 -> R.color.blue
                         else -> R.color.red
                     }
                 )
@@ -112,10 +115,9 @@ class NumbersListFragment : Fragment(), View.OnClickListener {
             return numbersCount
         }
 
-        fun addNumber(): Int {
+        fun addNumber() {
             numbersCount++
             notifyItemInserted(numbersCount - 1)
-            return numbersCount
         }
 
         inner class NumbersViewHolder(itemView: View) :
