@@ -1,42 +1,42 @@
 package com.pascal.homework
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 class NumberFragment : Fragment() {
-    private var number: Int = 0
+    companion object {
+        const val NUMBER_KEY = "number"
+        const val COLOR_KEY = "color"
+        const val DEFAULT_NUMBER = 0
+        const val DEFAULT_СOLOR = Color.BLACK
+    }
+
+    private var number: Int = DEFAULT_NUMBER
+    private var color: Int = DEFAULT_СOLOR
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        number = if (arguments != null) {
-            arguments!!.getInt("number")
-        } else savedInstanceState?.getInt("number") ?: 0
-
+        if (arguments != null) {
+            number = arguments!!.getInt(NUMBER_KEY)
+            color = arguments!!.getInt(COLOR_KEY)
+        }
         return inflater.inflate(R.layout.fragment_number, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val textView = view.findViewById<TextView>(R.id.number_text)
         textView.text = number.toString()
-        textView.setTextColor(
-            resources.getColor(
-                when {
-                    number % 2 == 1 -> R.color.blue
-                    else -> R.color.red
-                }
-            )
-        )
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt("number", number)
-        super.onSaveInstanceState(outState)
+        textView.setTextColor(color)
     }
 }
+
+
