@@ -24,10 +24,8 @@ class NumberFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (arguments != null) {
-            number = arguments!!.getInt(NUMBER_KEY)
-            color = arguments!!.getInt(COLOR_KEY)
-        }
+        arguments?.let { number = it.getInt(NUMBER_KEY) }
+        arguments?.let { color = it.getInt(COLOR_KEY) }
         return inflater.inflate(R.layout.fragment_number, container, false)
     }
 
