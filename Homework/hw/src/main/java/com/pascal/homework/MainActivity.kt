@@ -7,8 +7,8 @@ import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        const val APP_SETTINGS_KEY: String = "prefNumberCount"
-        const val APP_PREFERENCES_COUNTER: String = "prefNumberCount"
+        const val APP_SETTINGS_KEY = "prefNumberCount"
+        const val APP_PREFERENCES_COUNTER = "prefNumberCount"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

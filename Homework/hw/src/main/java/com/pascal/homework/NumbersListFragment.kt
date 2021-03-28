@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 class NumbersListFragment : Fragment(), AdapterCallback {
     companion object {
         const val DEFAULT_NUM_COUNT = 100
-        private const val APP_INSTANCE_COUNTER: String = "instNumberCount"
+        private const val APP_INSTANCE_COUNTER = "instNumberCount"
     }
 
     private var numbersCount: Int = DEFAULT_NUM_COUNT
@@ -75,11 +75,13 @@ class NumbersListFragment : Fragment(), AdapterCallback {
         bundle.putInt(NumberFragment.COLOR_KEY, color)
         numberFragment.arguments = bundle
 
-        activity!!.supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_frame, numberFragment)
-            .addToBackStack(null)
-            .commit()
+        activity?.let {
+            it.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_frame, numberFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     override fun getNumbersCount(): Int {

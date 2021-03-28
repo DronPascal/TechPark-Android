@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class NumbersAdapter(callback: AdapterCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var mAdapterCallback: AdapterCallback = callback
-
+class NumbersAdapter(private val mAdapterCallback: AdapterCallback) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val ODD_COLOR = R.color.blue
         private const val EVEN_COLOR = R.color.red
